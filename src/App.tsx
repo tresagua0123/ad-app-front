@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import Home from "src/pages/Home"; 
 import './App.css';
 import { Auth } from "src/components/templates/Auth";
