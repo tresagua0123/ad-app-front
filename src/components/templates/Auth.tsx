@@ -29,10 +29,14 @@ export const Auth: React.FC = () => {
     //     return { "Authorization": `Bearer ${idToken}` };
     //   }
 
-    const railsLogin = (isNewUser: boolean, idToken: string) => {
-        const url = isNewUser ? "/accounts" : "/login";
+    const railsLogin = async (isNewUser: boolean, idToken: string) => {
+        // const url = isNewUser ? "/accounts" : "/login";
+        const url = "/accounts";
         axios.post(`${process.env.REACT_APP_FIREBASE_API_ENDPOINT}${url}`)
-        .then((res) => console.log(res))
+        .then((res) => console.log(res), 
+        error => {
+            console.log(error.message)
+        });
     }
     
     
