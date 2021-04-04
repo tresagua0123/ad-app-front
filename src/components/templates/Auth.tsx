@@ -20,19 +20,22 @@ export const Auth: React.FC = () => {
           });
     }
 
-    // header情報を含めるときに以下のような関数を検討。
     // const csrfTokenObj = () => {
-    //     return { "X-CSRF-TOKEN": ('meta[name="csrf-token"]').('content') };
+    //     return { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content') };
     //   }
       
-    //   const authorizationObj = (idToken: string) => {
-    //     return { "Authorization": `Bearer ${idToken}` };
-    //   }
+      const authorizationObj = (idToken: string) => {
+        return { "Authorization": `Bearer ${idToken}` };
+      }
 
     const railsLogin = async (isNewUser: boolean, idToken: string) => {
         // const url = isNewUser ? "/accounts" : "/login";
         const url = "/accounts";
-        axios.post(`${process.env.REACT_APP_FIREBASE_API_ENDPOINT}${url}`)
+    
+        axios.post(`${process.env.REACT_APP_FIREBASE_API_ENDPOINT}${url}`, {
+            headers: {"Authorization": `Bearer ${idToken}`},
+            data: {}
+        })
         .then((res) => console.log(res), 
         error => {
             console.log(error.message)
