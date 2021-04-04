@@ -20,9 +20,10 @@ export const Auth: React.FC = () => {
           });
     }
 
-    // const csrfTokenObj = () => {
-    //     return { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content') };
-    //   }
+    const csrfTokenObj = () => {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')
+        return { "X-CSRF-TOKEN": csrfToken };
+      }
       
       const authorizationObj = (idToken: string) => {
         return { "Authorization": `Bearer ${idToken}` };
@@ -33,10 +34,14 @@ export const Auth: React.FC = () => {
         const url = "/accounts";
     
         axios.post(`${process.env.REACT_APP_FIREBASE_API_ENDPOINT}${url}`, {
-            headers: {"Authorization": `Bearer ${idToken}`},
+            headers: {
+                ...csrfTokenObj,
+                ...authorizationObj
+            },
             data: {}
         })
-        .then((res) => console.log(res), 
+        .then((res) => 
+            console.log(res), 
         error => {
             console.log(error.message)
         });
