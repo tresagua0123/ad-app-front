@@ -10,9 +10,8 @@ export const Auth: React.FC = () => {
         // ポップアップウィンドウでログインを行う場合はsignInWithPopupを呼び出す
         firebase.auth().signInWithPopup(provider)
         .then(user => {
-            console.log(user)
             if(user.additionalUserInfo && user.user) {alert("success : " + user.user.displayName + "さんでログインしました")
-        railsLogin(user.additionalUserInfo.isNewUser, user.user.uid)
+        railsLogin(user.additionalUserInfo.isNewUser, (user.credential as any).idToken as string ?? "unnchi")
         };
           })
           .catch(error => {
@@ -36,8 +35,7 @@ export const Auth: React.FC = () => {
         axios.post(`${process.env.REACT_APP_FIREBASE_API_ENDPOINT}${url}`, {
             headers: {
                 ...csrfTokenObj,
-                ...authorizationObj
-            },
+                ...authorizationObj(idToken)},
             data: {}
         })
         .then((res) => 
