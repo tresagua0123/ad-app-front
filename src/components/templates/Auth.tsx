@@ -33,9 +33,7 @@ export const Auth: React.FC = () => {
         const url = "/accounts";
     
         axios.post(`${process.env.REACT_APP_FIREBASE_API_ENDPOINT}${url}`, {
-            headers: {
-                ...csrfTokenObj,
-                ...authorizationObj(idToken)},
+            headers: { ...csrfTokenObj(), ...authorizationObj(idToken)},
             data: {}
         })
         .then((res) => 
