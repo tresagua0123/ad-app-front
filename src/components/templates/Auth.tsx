@@ -9,9 +9,11 @@ export const Auth: React.FC = () => {
         const provider = new firebase.auth.GoogleAuthProvider()
         // ポップアップウィンドウでログインを行う場合はsignInWithPopupを呼び出す
         firebase.auth().signInWithPopup(provider)
-        .then(user => {
-            if(user.additionalUserInfo && user.user) {alert("success : " + user.user.displayName + "さんでログインしました")
-        railsLogin(user.additionalUserInfo.isNewUser, (user.credential as any).idToken as string ?? "unnchi")
+        .then(async user => {
+            console.log(user)
+            if(user.additionalUserInfo && user.user) {alert("success : " + user.user.displayName + "さんでログインしました");
+        // const idTokenResult = () => user.user?.getIdToken().then(res => res);
+        railsLogin(user.additionalUserInfo.isNewUser, await user.user?.getIdToken())
         };
           })
           .catch(error => {
@@ -32,9 +34,8 @@ export const Auth: React.FC = () => {
         // const url = isNewUser ? "/accounts" : "/login";
         const url = "/accounts";
     
-        axios.post(`${process.env.REACT_APP_FIREBASE_API_ENDPOINT}${url}`, {
+        axios.post(`${process.env.REACT_APP_FIREBASE_API_ENDPOINT}${url}`, { data: {} }, {
             headers: { ...csrfTokenObj(), ...authorizationObj(idToken)},
-            data: {}
         })
         .then((res) => 
             console.log(res), 
