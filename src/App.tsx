@@ -1,7 +1,7 @@
 import React from 'react';
 import Home from "src/pages/Home"; 
 import './App.css';
-import { Auth } from "src/components/templates/Auth";
+// import { Auth } from "src/components/templates/Auth";
 import firebase from 'firebase/app';
 import "firebase/auth";
 
@@ -19,7 +19,7 @@ firebase.initializeApp(firebaseConfig);
 function App() {
   return (
     <>
-    <Auth />
+    {/* <Auth /> */}
     <Home />
   </>
   )

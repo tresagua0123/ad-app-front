@@ -1,19 +1,21 @@
-import React from 'react';
+import React, {useState} from 'react';
 import firebase from 'firebase/app';
 import axios from 'axios';
 
-export const Auth: React.FC = () => {
+// export const Auth: React.FC = () => {
 
-    const signInWithGoogle = () => {
+    export const signInWithGoogle = () => {
         // Googleプロバイダオブジェクトのインスタンスを作成
         const provider = new firebase.auth.GoogleAuthProvider()
         // ポップアップウィンドウでログインを行う場合はsignInWithPopupを呼び出す
         firebase.auth().signInWithPopup(provider)
         .then(async user => {
             console.log(user)
+            console.log(user.user?.photoURL)
             if(user.additionalUserInfo && user.user) {alert("success : " + user.user.displayName + "さんでログインしました");
         // const idTokenResult = () => user.user?.getIdToken().then(res => res);
-        railsLogin(user.additionalUserInfo.isNewUser, await user.user?.getIdToken())
+        const val = await railsLogin(user.additionalUserInfo.isNewUser, await user.user?.getIdToken())
+        console.log(val);
         };
           })
           .catch(error => {
@@ -37,22 +39,23 @@ export const Auth: React.FC = () => {
         axios.post(`${process.env.REACT_APP_FIREBASE_API_ENDPOINT}${url}`, { data: {} }, {
             headers: { ...csrfTokenObj(), ...authorizationObj(idToken)},
         })
-        .then((res) => 
-            console.log(res), 
+        .then(async res => {
+            console.log(res)
+        },
         error => {
             console.log(error.message)
         });
     }
     
     
-    return (
-            <div>
-                <div className="login">
-                    <h1>ログイン</h1>
-                </div>
-                <div className="signin_button">
-                    <img src="../btn_google_signin.png" onClick={()=>signInWithGoogle()} alt="google signin"/>
-                </div>
-            </div>
-        );
-}
+//     return (
+//             <div>
+//                 {/* <div className="login">
+//                     <h1>ログイン</h1>
+//                 </div>
+//                 <div className="signin_button">
+//                     <img src="../btn_google_signin.png" onClick={()=>signInWithGoogle()} alt="google signin"/>
+//                 </div> */}
+//             </div>
+//         );
+// }
